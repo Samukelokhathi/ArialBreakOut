@@ -80,11 +80,11 @@ function create () {
 }
 
 function update () {
-    if(score === 49){
+    if(lives === 1){
         location.reload()
     }
 
-    if(lives === 1){
+    if(score === 45){
         location.reload()
     }
 
@@ -96,8 +96,6 @@ function bounceOfPaddle(){
 }
 
 function createBricks() {
-    let defaultColor = 0xff0000; 
-
     for (c = 3; c < bricksInfo.count.col; c++) {
         let colColor = Phaser.Display.Color.RandomRGB();
 
