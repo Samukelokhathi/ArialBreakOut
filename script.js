@@ -1,11 +1,12 @@
 let config = {
     type:Phaser.AUTO,
     parent:'game',
-    width: 1000,
-    height: 700,
+    width: "100%",
+    height: "100%",
     scene:{
         create:create,  //this is the main load function
-        update:update   // update from the screen
+        update:update,// update from the screen
+        
     },
     physics:{
         default:'arcade',
@@ -13,6 +14,10 @@ let config = {
             gravity:{y:0},
             debug:false
         }
+    },
+    scale: {
+        mode: Phaser.Scale.RESIZE,
+        autoCenter: Phaser.Scale.CENTER_BOTH
     }
 };
 
@@ -75,10 +80,11 @@ function create () {
 }
 
 function update () {
-    if(lives === 0){
+    if(score === 49){
         location.reload()
     }
-    if(score === bricksInfo.count.row * bricksInfo.count.col){
+
+    if(lives === 1){
         location.reload()
     }
 
@@ -89,15 +95,22 @@ function bounceOfPaddle(){
 
 }
 
-function createBricks(){
-    for(c = 0; c < bricksInfo.count.col;c++){
-        for(r = 0; r < bricksInfo.count.row;r++){
-            let bricksX = (c * (bricksInfo.width + bricksInfo.padding)+ bricksInfo.offset.left);
-            let bricksY = (r * (bricksInfo.height + bricksInfo.padding)+ bricksInfo.offset.top);
-            manage(scene.physics.add.existing(scene.add.rectangle(bricksX, bricksY, 60, 20, 0xffffff)))
+function createBricks() {
+    let defaultColor = 0xff0000; 
+
+    for (c = 3; c < bricksInfo.count.col; c++) {
+        let colColor = Phaser.Display.Color.RandomRGB();
+
+        for (r = 0; r < bricksInfo.count.row; r++) {
+            let bricksX = c * (bricksInfo.width + bricksInfo.padding) + bricksInfo.offset.left;
+            let bricksY = r * (bricksInfo.height + bricksInfo.padding) + bricksInfo.offset.top;
+            
+            let color = colColor.color; 
+
+            let brick = scene.add.rectangle(bricksX, bricksY, bricksInfo.width, bricksInfo.height, color);
+            manage(scene.physics.add.existing(brick));
         }
     }
-
 }
 
 function manage(brick){
@@ -118,3 +131,20 @@ function hitLava(){
     lives -= 1
     livesText.setText("Lives: " + lives)
 }
+
+
+
+
+
+
+
+// function createBricks(){
+//     for(c = 3; c < bricksInfo.count.col;c++){
+//         for(r = 0; r < bricksInfo.count.row;r++){
+//             let bricksX = (c * (bricksInfo.width + bricksInfo.padding)+ bricksInfo.offset.left);
+//             let bricksY = (r * (bricksInfo.height + bricksInfo.padding)+ bricksInfo.offset.top);
+//             manage(scene.physics.add.existing(scene.add.rectangle(bricksX, bricksY, 60, 20, 0xff0000)))
+//         }
+//     }
+
+// }
